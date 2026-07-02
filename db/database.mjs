@@ -2,8 +2,19 @@ import MongoDB from "mongodb"
 import { config } from "../config.mjs"
 
 let db
+
 export async function connectDB() {
     return MongoDB.MongoClient.connect(config.db.host).then((client) => {
         db = client.db("Xdb") // 데이터베이스명, 없으면 생성됨
     })
+}
+
+// db 안의 컬렉션(users) 접근, 객체
+export function getUsers() {
+    return db.collection("users")
+}
+
+// db 안의 컬렉션(posts) 접근, 객체
+export function getPosts() {
+    return db.collection("posts")
 }
