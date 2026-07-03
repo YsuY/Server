@@ -15,7 +15,7 @@ function required(key, defaultValue=undefined) {
 export const config = {
     jwt: {
         secretKey: required("JWT_SECRET"),
-        expireseInSec: parseInt(required("JWT_EXPIRES_SEC")) //parseInt: 숫자형으로 변환
+        expiresInSec: parseInt(required("JWT_EXPIRES_SEC"))
     },
     bcrypt: {
         saltRounds: parseInt(required("BCRYPT_SALT_ROUNDS", 10))

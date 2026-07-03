@@ -17,8 +17,15 @@ export async function createUser(user) {
     // result.insertedId.toString() : 삽입 됐는지 확인, 아이디를 스트링으로 반환
 }
 
+// 로그인 유지
+export async function findById(id) {
+    return getUsers().find({_id: new ObjectId(id)}).next().then(mapOptionalUser)
+}
+
 // 유저 아이디를 찾아줌 -> 중복 체크 함수와 연결
 function mapOptionalUser(user) {
     // 아이디가 있다면 객체 형식으로 리턴시켜줌. 없다면 null
     return user ? {...user, id: user._id.toString() } : user
 }
+
+

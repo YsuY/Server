@@ -1,5 +1,6 @@
 import express from "express"
 import * as authController from "../controller/auth.mjs"
+import { isAuth } from "../middleware/auth.mjs"
 
 const router = express.Router() // 객체 만들기
 
@@ -18,7 +19,8 @@ router.post("/login", authController.login) // authController의 login 사용
 
 // 로그인 유지 체크
 //http://127.0.0.1:8080/post/me (GET 방식)
-router.get("/me", authController.me) // authController의 me 사용
+router.get("/me", isAuth, authController.me) // authController의 me 사용
+// isAuth -> authController.me 순서로 방문
 
 
 
