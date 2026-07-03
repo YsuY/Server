@@ -34,20 +34,19 @@ export async function getPost(req, res) {
     }
 }
 
-// 포스트 수정하기에 대한 함수
-export async function editPost(req, res) {
+// 포스트 수정하는 함수
+export async function updatePost(req, res) {
     const id = req.params.id
-    const edit = {
-        ...req.body,
-        updatedAt: new Date()
+    const text = req.body.text
+    const post = await postRepository.getById(id)
+    if(!post) {
+        return res.status(404).json({message: `${id}의 포스트가 없습니다`})
     }
-    const result = await postRepository.update(id, edit)
-    // 수정할 게시글을 못 찾았다면
-    if(result.matchedCount === 0) {
-        res.status(404).json({ message: "수정 오류 발생"})
-    } 
-    const updatedPost = await postRepository.getpost(id)
-    return res.status(200).json(updatedPost)
+    if(post.idx !== req.id) {
+        return res.sendStatus(403)
+    }
+    const updated = await postRepository.update(id, text)
+    res.status(200).json(updated)
 }
 
 // 포스트 삭제

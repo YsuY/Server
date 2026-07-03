@@ -1,4 +1,4 @@
-import MongoDB, { ObjectId } from "mongodb"
+import MongoDB, { ObjectId, ReturnDocument } from "mongodb"
 import * as UserRepository from "./auth.mjs"
 import { getPosts } from "../db/database.mjs"
 
@@ -40,17 +40,13 @@ function mapOptionalPost(post){
     return post ? { ...post, id: post._id.toString() } : post
 }
 
-// 포스트 수정에 대한 결과 리턴
-export async function update(id, edit) {
-    return getPosts().updateOne(
+// 포스트 수정
+export async function update(id, text) {
+    return getPosts().findOneAndUpdate(
         {_id: new ObjectId(id)},
-        {$set: edit}
-    )
-}
-
-// 수정 후 조회
-export async function getpost(id) {
-    return getPosts().findOne({ _id: new ObjectId(id) })
+        {$set: {text}},
+        {returnDocument: "after"}
+    ).then((result) => result)
 }
 
 //포스트 삭제
